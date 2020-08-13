@@ -13,6 +13,9 @@
     "no-console": false,
     "no-unused-expression":false,
     "member-access": [true, "no-public"],
-    "ordered-imports": false
+    "ordered-imports": false,
+    "object-literal-sort-keys":false,
+    "prefer-const": false,
+    "jsx-no-lambda": false
   }
 }

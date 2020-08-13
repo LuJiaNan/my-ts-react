@@ -12,10 +12,11 @@
 // registerServiceWorker();
 
 import React from "./react";
-import Component from "./react/component";
-import ReactDOM from "./react/react-dom";
-import RouterView from './router';
-
+// import Component from "./react/component";
+import Component from "./react/update/updateComponent";
+// import ReactDOM from "./react/react-dom";
+import ReactDOM, { useState } from "./react/update/react-update-dom";
+import RouterView from "./router";
 
 // const App = (
 //   <div className={'container'}>
@@ -27,9 +28,9 @@ import RouterView from './router';
 
 class App extends Component {
   state = {
-    text: 'button'
-  }
-  constructor(props:any){
+    text: "button",
+  };
+  constructor(props: any) {
     super();
     // console.log(props)
   }
@@ -41,17 +42,17 @@ class App extends Component {
   }
   atClick = () => {
     this.setState({
-      text: 'app'
-    })
+      text: "app",
+    });
     console.log("clicked");
-  }
+  };
   atBlur() {
     console.log("blured");
   }
   render() {
     // return '1111'
-    console.log('render')
-    console.log(this.state)
+    console.log("render");
+    console.log(this.state);
     const { text } = this.state;
     return (
       <div>
@@ -77,16 +78,27 @@ function atClick() {
   console.log("i am function, clicked");
 }
 
-const AppFn = () => {
-  // @ts-ignore
-  return <button atClick={atClick}>click</button>;
+const AppFn = ({name}:{name:any}) => {
+  const [count, setCount] = useState(0);
+  return (
+    <div>
+      {/* {
+        // @ts-ignore
+        <button atClick={atClick}>click</button>
+      } */}
+      {
+        // @ts-ignore
+        <button atClick={() => setCount(count + 1)}>{name}</button>
+      }
+      <span>{count}</span>
+    </div>
+  );
 };
-
 
 ReactDOM.render(
   // @ts-ignore
-  <App />,
-  // <AppFn />,
+  // <App />,
+  <AppFn name={'add'}/>,
   // App,
   // <RouterView/>,
   document.getElementById("root") as HTMLElement
