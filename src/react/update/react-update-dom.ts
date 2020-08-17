@@ -1,4 +1,5 @@
 import {TEXT, PLACEMENT, UPDATE, DELETION} from "../const";
+import {styleHandler} from '../react-dom';
 
 // 下一个子任务 fiber
 let nextUnitOfWork:any = null;
@@ -53,12 +54,14 @@ function updateNode(node:any, prevVal:any, nextVal:any) {
   Object.keys(prevVal)
     .filter(k => k !== "children")
     .forEach(k => {
-      if (k.slice(0, 2) === "on") {
-        // 简单处理 on开头当做事件
+      if (k === "style") {
+        const style = prevVal[k];
+        node[k] = styleHandler(style);
+      } else if (k.slice(0, 2) === "at") {
+        // 简单处理 at开头当做事件
         let eventName = k.slice(2).toLowerCase();
         node.removeEventListener(eventName, prevVal[k]);
       } else {
-        // 简单处理，如果需要考虑的style的话，需要再做处理，清空对象
         if (!(k in nextVal)) {
           node[k] = "";
         }
@@ -68,8 +71,10 @@ function updateNode(node:any, prevVal:any, nextVal:any) {
   Object.keys(nextVal)
     .filter(k => k !== "children")
     .forEach(k => {
-      if (k.slice(0, 2) === "on") {
-        // 简单处理 on开头当做事件
+      if (k === "style") {
+        const style = prevVal[k];
+        node[k] = styleHandler(style);
+      } else if (k.slice(0, 2) === "at") {
         let eventName = k.slice(2).toLowerCase();
         node.addEventListener(eventName, nextVal[k]);
       } else {
@@ -185,7 +190,6 @@ function peformUnitOfWork(fiber:any) {
 
 function workLoop(deadline:any) {
   // 查找下一个任务，并且当前帧没有结束
-  console.log(deadline)
   while (nextUnitOfWork && deadline.timeRemaining() > 1) {
     // 当前有任务
     nextUnitOfWork = peformUnitOfWork(nextUnitOfWork);
@@ -197,9 +201,9 @@ function workLoop(deadline:any) {
     commitRoot();
   }
 
-  window.requestIdleCallback(workLoop);
+  requestIdleCallback(workLoop);
 }
-window.requestIdleCallback(workLoop);
+requestIdleCallback(workLoop);
 
 // ! commit 阶段
 function commitRoot() {

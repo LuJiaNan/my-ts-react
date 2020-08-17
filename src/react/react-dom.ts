@@ -95,7 +95,7 @@ function updateNode(node: any, props: any) {
   });
 }
 
-function styleHandler(styleObj: object) {
+export function styleHandler(styleObj: object) {
   let styleStr = "";
   const Acode = "A".charCodeAt(0);
   const Zcode = "Z".charCodeAt(0);
