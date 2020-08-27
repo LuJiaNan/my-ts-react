@@ -20,12 +20,19 @@ import ReactDOM from "./react/update/react-update-dom";
 import RouterView from "./router";
 
 const App = (
-  <div className={'container'}>
-    <div className={'title'} style={{color:'red',fontSize:'30px'}}>title</div>
+  <div className={"container"}>
+    <div
+      className={"title"}
+      // @ts-ignore
+      atClick={atClick}
+      style={{ color: "red", fontSize: "30px" }}
+    >
+      title
+    </div>
     <span>content</span>
     {/* <>fragment</> */}
   </div>
-)
+);
 
 // class App extends Component {
 //   state = {
