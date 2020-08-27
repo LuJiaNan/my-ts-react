@@ -1,5 +1,6 @@
 import React from "../react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+// import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Router, Switch, Route, Link } from "../react-router-dom";
 
 import Detail from "../pages/detail";
 import Edit from "../pages/edit";
@@ -11,13 +12,22 @@ export default function RouterView() {
       <div>
         <ul>
           <li>
-            <Link to="/">List</Link>
+            {
+              // @ts-ignore
+              <Link to="/">List</Link>
+            }
           </li>
           <li>
-            <Link to="/detail">Detail</Link>
+            {
+              // @ts-ignore
+              <Link to="/detail">Detail</Link>
+            }
           </li>
           <li>
-            <Link to="/edit">edit</Link>
+            {
+              // @ts-ignore
+              <Link to="/edit">edit</Link>
+            }
           </li>
         </ul>
 

@@ -28,6 +28,6 @@
     "webpack",
     "jest",
     "src/setupTests.ts",
-    "src/react-router-dom/"
+    "src/react-router-dom-js"
   ]
 }

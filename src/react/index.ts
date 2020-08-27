@@ -1,4 +1,5 @@
 import { TEXT } from "./const";
+import Component from './component';
 function createElement(type: any, props: any, ...children: any) {
   // console.log(props);
   return {
@@ -24,4 +25,5 @@ function createTextNode(text: any) {
 
 export default {
   createElement,
+  Component
 };

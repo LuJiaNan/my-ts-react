@@ -1,4 +1,4 @@
-export default class Component {
+export default class Component<Props> {
     state:{}
     // isReactComponent: true
     isReactComponent(){}
@@ -6,7 +6,7 @@ export default class Component {
         this.state = {...this.state, ...stateObj}
         // updateComponent
         // this.render()
-        console.log(this)
+        // console.log(this)
     }
     render(){}
 }

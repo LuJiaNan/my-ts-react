@@ -7,7 +7,7 @@ export default class Component {
         this.state = {...this.state, ...stateObj}
         // updateComponent
         // this.render()
-        console.log(this)
+        ReactDOM.setState(this.state)
     }
     render(){}
 }
