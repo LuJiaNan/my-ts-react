@@ -16,8 +16,13 @@ import React from "./react";
 import Component from "./react/update/updateComponent";
 // import ReactDOM from "./react/react-dom";
 // import ReactDOM, { useState } from "./react/update/react-update-dom";
-import ReactDOM from "./react/update/react-update-dom";
+import ReactDOM, { useState } from "./react/update/dom";
+// import ReactDOM from "./react/update/react-update-dom";
 import RouterView from "./router";
+
+function atClick() {
+  console.log("clicked");
+}
 
 const App = (
   <div className={"container"}>
@@ -83,32 +88,28 @@ const App = (
 //   }
 // }
 
-function atClick() {
-  console.log("i am function, clicked");
-}
-
-// const AppFn = ({name}:{name:any}) => {
-//   const [count, setCount] = useState(0);
-//   return (
-//     <div>
-//       {/* {
-//         // @ts-ignore
-//         <button atClick={atClick}>click</button>
-//       } */}
-//       {
-//         // @ts-ignore
-//         <button atClick={() => setCount(count + 1)}>{name}</button>
-//       }
-//       <span>{count}</span>
-//     </div>
-//   );
-// };
+const AppFn = ({name}:{name:any}) => {
+  const [count, setCount] = useState(0);
+  return (
+    <div>
+      {/* {
+        // @ts-ignore
+        <button atClick={atClick}>click</button>
+      } */}
+      {
+        // @ts-ignore
+        <button atClick={() => setCount(count + 1)}>{name}</button>
+      }
+      <span>{count}</span>
+    </div>
+  );
+};
 
 ReactDOM.render(
   // @ts-ignore
   // <App />,
-  // <AppFn name={'add'}/>,
-  App,
+  <AppFn name={'add'}/>,
+  // App,
   // <RouterView/>,
   document.getElementById("root") as HTMLElement
 );

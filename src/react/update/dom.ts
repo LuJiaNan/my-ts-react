@@ -173,12 +173,11 @@ function peformUnitOfWork(fiber:any) {
   }
 
   // 2. 返回下一个任务
-  // 找到下一个任务 得有原则
-  // 原则就是：先找子元素
+  // 先找子元素
   if (fiber.child) {
     return fiber.child;
   }
-  // 原则2： 如没有子元素，寻找兄弟元素
+  // 如没有子元素，寻找兄弟元素
   let nextFiber = fiber;
   while (nextFiber) {
     if (nextFiber.sibling) {
@@ -225,7 +224,7 @@ function commitWorker(fiber:any) {
     parentNodeFiber = parentNodeFiber.return;
   }
 
-  // parentNode是指分fiber的父node（当前fiber的父fiber可能没有node吗）
+  // parentNode是指分fiber的父node（当前fiber的父fiber有可能没有node）
   const parentNode = parentNodeFiber.node;
   if (fiber.effectTag === PLACEMENT && fiber.node !== null) {
     parentNode.appendChild(fiber.node);
@@ -241,7 +240,7 @@ function commitWorker(fiber:any) {
   commitWorker(fiber.sibling);
 }
 
-// fiber是要删除的
+// 删除fiber
 function commitDeletions(fiber:any, parentNode:any) {
   if (fiber.node) {
     parentNode.removeChild(fiber.node);
