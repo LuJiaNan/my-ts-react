@@ -5,7 +5,7 @@ function render(vnode: any, container: any) {
   // vnode->node
   const node = createNode(vnode, container);
   // console.log(node);
-  container.appendChild(node);
+  node && container.appendChild(node);
   vnode?.type?.prototype?.componentDidMount?.();
 }
 

@@ -14,7 +14,7 @@ function render(vnode: any, container: any, state?:object) {
   const node = createNode(vnode, container);
   // console.log(node);
   // console.log(container)
-  container.appendChild(node);
+  node && container.appendChild(node);
   vnode?.type?.prototype?.componentDidMount?.();
 }
 
