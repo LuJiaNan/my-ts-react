@@ -1,11 +1,19 @@
 import { TEXT } from "./const";
+import React from '../react';
 
-function render(vnode: any, container: any) {
-  // console.log(vnode);
+let cont:any = null;
+let first = true
+
+function render(vnode: any, container?: any) {
+  // console.log(container);
+  // console.log(container);
   // vnode->node
+  if(first){
+    cont = container;
+    first = !first;
+  }
   const node = createNode(vnode, container);
-  // console.log(node);
-  node && container.appendChild(node);
+  node && container instanceof HTMLElement && container.appendChild(node);
   vnode?.type?.prototype?.componentDidMount?.();
 }
 
@@ -13,7 +21,6 @@ function createNode(vnode: any, container: any) {
   const { type, props } = vnode;
   let node = null;
   const nodeType = typeof type;
-  // console.log(nodeType);
   if (type === TEXT) {
     node = document.createTextNode(props.nodeValue);
   } else if (nodeType === "string") {
@@ -34,16 +41,18 @@ function createNode(vnode: any, container: any) {
       node = updateFunctionComponent(vnode, container);
     }
   } else if (nodeType === "undefined") {
-    node = document.createDocumentFragment();
+    // node = document.createDocumentFragment();
+    React.createElement(TEXT, Object.assign({},props,{nodeValue:vnode.nodeValue}), []);
+    node = document.createTextNode(vnode.nodeValue)
   } else {
   }
-
   props && reconcileChildren(props.children, node);
   props && updateNode(node, props);
   return node;
 }
 
 function reconcileChildren(children: any, node: any) {
+  console.log(children)
   for (const child of children) {
     if (Array.isArray(child)) {
       for (const nextChild of child) {
@@ -79,13 +88,12 @@ function updateFunctionComponent(vnode: any, container: any): any {
 
 function updateNode(node: any, props: any) {
   const { children, nodeValue, ...others } = props;
-
   Object.keys(others).forEach((key) => {
     if (key === "style") {
       // others[key] = {color: 'red', fontSize: '20px'}
       const style = others[key];
       node[key] = styleHandler(style);
-    } else if (key.slice(0, 2) === "at") {
+    } else if (/at\w+/.test(key)) {
       // console.log(key);
       // console.log(node);
       node.addEventListener(key.slice(2).toLowerCase(), others[key]);
@@ -95,7 +103,27 @@ function updateNode(node: any, props: any) {
   });
 }
 
-export function styleHandler(styleObj: object) {
+export function setState(comp:any, state:any){
+  const vnode = React.createElement(comp.__proto__.constructor, comp, comp.props);
+  if(vnode.props.props){
+    vnode.props.props.nodeValue = state.count;
+  }
+  const container = cont;
+  const node = createNode(vnode, container);
+  console.log(vnode)
+  console.log(container)
+  updateState(node, container)
+}
+
+function updateState(node:any, container:any){
+  const childNodes = container?.childNodes;
+  childNodes.forEach((child:any) => container.removeChild(child))
+  // console.log(node);
+  node && container.appendChild(node);
+  // console.log(container)
+}
+
+export function styleHandler(styleObj: HTMLElement) {
   let styleStr = "";
   const Acode = "A".charCodeAt(0);
   const Zcode = "Z".charCodeAt(0);
@@ -116,4 +144,4 @@ export function styleHandler(styleObj: object) {
   return styleStr;
 }
 
-export default { render };
+export default { render, setState };

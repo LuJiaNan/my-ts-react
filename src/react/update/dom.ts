@@ -57,7 +57,7 @@ function updateNode(node:any, prevVal:any, nextVal:any) {
       if (k === "style") {
         const style = prevVal[k];
         node[k] = styleHandler(style);
-      } else if (k.slice(0, 2) === "at") {
+      } else if (/at\w+/.test(k)) {
         // 简单处理 at开头当做事件
         let eventName = k.slice(2).toLowerCase();
         node.removeEventListener(eventName, prevVal[k]);
@@ -74,7 +74,7 @@ function updateNode(node:any, prevVal:any, nextVal:any) {
       if (k === "style") {
         const style = prevVal[k];
         node[k] = styleHandler(style);
-      } else if (k.slice(0, 2) === "at") {
+      } else if (/at\w+/.test(k)) {
         let eventName = k.slice(2).toLowerCase();
         node.addEventListener(eventName, nextVal[k]);
       } else {
@@ -133,7 +133,7 @@ function reconcileChildren(workInProgressFiber:any, children:any) {
     prevSibling = newFiber;
   }
 
-  // 基本构建完成 done
+  // 基本构建完成
 }
 
 function updateHostComponent(fiber:any) {
@@ -188,8 +188,9 @@ function peformUnitOfWork(fiber:any) {
 }
 
 function workLoop(deadline:any) {
-  // 查找下一个任务，并且当前帧没有结束
-  while (nextUnitOfWork && deadline.timeRemaining() > 1) {
+  console.log(deadline.timeRemaining())
+  // 查找下一个任务，并且当前帧没有结束，这里简单实现，react使用更严谨的shouldYield方法
+  while (nextUnitOfWork && (deadline.timeRemaining() > 0 || deadline.didTimeout)) {
     // 当前有任务
     nextUnitOfWork = peformUnitOfWork(nextUnitOfWork);
   }
@@ -206,7 +207,7 @@ requestIdleCallback(workLoop);
 
 // ! commit 阶段
 function commitRoot() {
-  console.log("commitRoot"); // sy-log
+  console.log("commitRoot"); 
   deletions.forEach(commitWorker);
   commitWorker(wipRoot.child);
   currentRoot = wipRoot;
@@ -224,7 +225,7 @@ function commitWorker(fiber:any) {
     parentNodeFiber = parentNodeFiber.return;
   }
 
-  // parentNode是指分fiber的父node（当前fiber的父fiber有可能没有node）
+  // parentNode是指fiber的父node
   const parentNode = parentNodeFiber.node;
   if (fiber.effectTag === PLACEMENT && fiber.node !== null) {
     parentNode.appendChild(fiber.node);
@@ -249,7 +250,7 @@ function commitDeletions(fiber:any, parentNode:any) {
   }
 }
 
-// 当前正在工作中的fiber， work in progress
+// 当前正在工作中的fiber
 let wipFiber:any = null;
 let hookIndex:any = null;
 export function useState(init:any) {

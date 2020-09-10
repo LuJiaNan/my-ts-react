@@ -1,13 +1,20 @@
-import ReactDOM from './react-update-dom'
-export default class Component {
+// import {enqueueSetState} from './updateQuene'
+import ReactDOM, {setState} from '../react-dom';
+export default class Component<T>{
     state:{}
+    props: any;
+    constructor(props?:any, context?:any){
+        this.props = props;
+    }
     // isReactComponent: true
     isReactComponent(){}
-    setState(stateObj:any) : void {
+    setState(stateObj:any,callback?:any) : void {
         this.state = {...this.state, ...stateObj}
         // updateComponent
         // this.render()
-        ReactDOM.setState(this.state)
+        const self = this;
+        setState(self,this.state)
+        // enqueueSetState(this, stateObj)
     }
     render(){}
 }

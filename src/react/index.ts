@@ -1,25 +1,31 @@
 import { TEXT } from "./const";
-import Component from './component';
-function createElement(type: any, props: any, ...children: any) {
-  // console.log(props);
+// import Component from './component';
+import Component from './update/updateComponent';
+
+function createElement(type:any, props:any, ...children:any) {
+  let defaultProps = {};
+  if (type && type.defaultProps) {
+    defaultProps = {...type.defaultProps};
+  }
   return {
-    props: {
-      ...props,
-      children: children.map((child: any) =>
-        typeof child === "object" ? child : createTextNode(child)
-      ),
-    },
     type,
+    props: {
+      ...defaultProps,
+      ...props,
+      children: children.map((child:any) =>
+        typeof child === "object" ? child : createTextNode(child)
+      )
+    }
   };
 }
 
-function createTextNode(text: any) {
+function createTextNode(text:string | number) {
   return {
+    type: TEXT,
     props: {
       children: [],
-      nodeValue: text,
-    },
-    type: TEXT,
+      nodeValue: text
+    }
   };
 }
 

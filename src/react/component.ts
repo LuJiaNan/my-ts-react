@@ -5,7 +5,7 @@ export default class Component<Props> {
     setState = (stateObj:any) => {
         this.state = {...this.state, ...stateObj}
         // updateComponent
-        // this.render()
+        this.render()
         // console.log(this)
     }
     render(){}

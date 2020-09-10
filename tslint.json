@@ -16,6 +16,11 @@
     "ordered-imports": false,
     "object-literal-sort-keys":false,
     "prefer-const": false,
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "object-literal-shorthand":false,
+    "only-arrow-functions":false,
+    "no-conditional-assignment":false,
+    "one-variable-per-declaration":false,
+    "disable-next-line":false
   }
 }
