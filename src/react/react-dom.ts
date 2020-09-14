@@ -1,14 +1,14 @@
 import { TEXT } from "./const";
-import React from '../react';
+import React from "../react";
 
-let cont:any = null;
-let first = true
+let cont: any = null;
+let first = true;
 
 function render(vnode: any, container?: any) {
   // console.log(container);
   // console.log(container);
   // vnode->node
-  if(first){
+  if (first) {
     cont = container;
     first = !first;
   }
@@ -42,8 +42,12 @@ function createNode(vnode: any, container: any) {
     }
   } else if (nodeType === "undefined") {
     // node = document.createDocumentFragment();
-    React.createElement(TEXT, Object.assign({},props,{nodeValue:vnode.nodeValue}), []);
-    node = document.createTextNode(vnode.nodeValue)
+    React.createElement(
+      TEXT,
+      Object.assign({}, props, { nodeValue: vnode.nodeValue }),
+      []
+    );
+    node = document.createTextNode(vnode.nodeValue);
   } else {
   }
   props && reconcileChildren(props.children, node);
@@ -52,7 +56,7 @@ function createNode(vnode: any, container: any) {
 }
 
 function reconcileChildren(children: any, node: any) {
-  console.log(children)
+  console.log(children);
   for (const child of children) {
     if (Array.isArray(child)) {
       for (const nextChild of child) {
@@ -103,24 +107,33 @@ function updateNode(node: any, props: any) {
   });
 }
 
-export function setState(comp:any, state:any){
-  const vnode = React.createElement(comp.__proto__.constructor, comp, comp.props);
-  if(vnode.props.props){
+export function setState(comp: any, state: any) {
+  const vnode = React.createElement(
+    comp.__proto__.constructor,
+    comp,
+    comp.props
+  );
+  if (vnode.props.props) {
     vnode.props.props.nodeValue = state.count;
   }
-  const container = cont;
-  const node = createNode(vnode, container);
-  console.log(vnode)
-  console.log(container)
-  updateState(node, container)
+  updateState(vnode);
 }
 
-function updateState(node:any, container:any){
-  const childNodes = container?.childNodes;
-  childNodes.forEach((child:any) => container.removeChild(child))
-  // console.log(node);
-  node && container.appendChild(node);
-  // console.log(container)
+function updateState(vnode: any) {
+  let container = cont;
+  let node = null;
+  let empty = false;
+  while (container.firstChild) {
+    empty = true;
+    container.removeChild(container.firstChild);
+  }
+  if (empty) {
+    console.log(vnode);
+    console.log(container);
+    node = createNode(vnode, container);
+    // console.log(node);
+    node && container.appendChild(node);
+  }
 }
 
 export function styleHandler(styleObj: HTMLElement) {
